@@ -77,4 +77,14 @@ console.log("getcontract", typeof ethers.getContractAt());
           ).to.be.revertedWith("Raffle__RaffleNotOpen");
         });
       });
+      describe("checkUpkeep", async function () {
+        it("returns false if people haven't", async function () {
+          await network.provider.send("evm_increaseTime", [
+            interval.toNumber() + 1,
+          ]);
+          await network.provider.send("evm_mine", []);
+          const { upkeepNeeded } = await raffle.callStatic.checkUpkeep([]);
+          assert(!upkeepNeeded);
+        });
+      });
     });
