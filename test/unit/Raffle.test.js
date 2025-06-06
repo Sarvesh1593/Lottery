@@ -2,7 +2,7 @@ const { network, getNamedAccounts, ethers } = require("hardhat");
 const {
   developmentChains,
   networkConfig,
-} = require("../helper-hardhat-config");
+} = require("../../helper-hardhat-config");
 const { assert, expect } = require("chai");
 
 console.log("getcontract", typeof ethers.getContractAt());
@@ -85,6 +85,18 @@ console.log("getcontract", typeof ethers.getContractAt());
           await network.provider.send("evm_mine", []);
           const { upkeepNeeded } = await raffle.callStatic.checkUpkeep([]);
           assert(!upkeepNeeded);
+        });
+        it("returns falsei f raffle isn't open ", async function () {
+          await raffle.enterRaffle({ value: raffleEnteranceFee });
+          await network.provider.send("evm_increaseTime", [
+            interval.toNumber() + 1,
+          ]);
+          await network.provider.send("evm_mine", []);
+          await raffle.performUpkeep([]);
+          const raffleState = await raffle.getRaffleState();
+          const { upkeepNeeded } = await raffle.callStatic.checkUpkeep();
+          assert.equal(raffleState.toString(), "1");
+          assert.equal(upkeepNeeded, false);
         });
       });
     });

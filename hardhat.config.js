@@ -42,4 +42,7 @@ module.exports = {
       default: 1,
     },
   },
+  sourcify: {
+    enabled: true,
+  },
 };
