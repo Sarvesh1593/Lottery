@@ -9,15 +9,15 @@ const networkConfig = {
       "0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c",
     subcriptionId:
       "115719088125632793819028985495778384045269732717400886018009737543245264053543",
-    callBackGasLimit: "5000",
+    callBackGasLimit: "50000000000",
     interval: "30",
   },
   31337: {
-    name: "hardhat", // ✅ Use chainId 31337 for hardhat local node
+    name: "localhost", // ✅ Use chainId 31337 for hardhat local node
     entranceFee: ethers.utils.parseEther("0.01"),
     gasLane:
       "0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c",
-    callBackGasLimit: "5000",
+    callBackGasLimit: "500000000000",
     interval: "30",
   },
 };

@@ -10,10 +10,11 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
   const { deploy, log } = deployments;
   const { deployer } = await getNamedAccounts();
   const chainId = network.config.chainId;
-  let vrfCoordinatorV2Address, subscriptionId;
+  console.log(`chainId : ${chainId}`);
+  let vrfCoordinatorV2Address, subscriptionId, vrfCoordinatorV2Mock;
 
   if (developmentChains.includes(network.name)) {
-    const vrfCoordinatorV2Mock = await ethers.getContractAt(
+    vrfCoordinatorV2Mock = await ethers.getContractAt(
       "VRFCoordinatorV2Mock",
       (
         await deployments.get("VRFCoordinatorV2Mock")
@@ -50,6 +51,11 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     log: true,
     waitConfirmations: network.config.blockConfirmations || 1,
   });
+
+  if (developmentChains.includes(network.name)) {
+    await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address);
+    log("Consumer is added");
+  }
 
   if (
     !developmentChains.includes(network.name) &&

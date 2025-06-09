@@ -1,7 +1,8 @@
 const { ethers } = require("hardhat");
 
 async function enterRaffle() {
-  const raffle = await ethers.getContract("Raffle");
+  const raffleDeployment = await deployments.get("Raffle");
+  const raffle = await ethers.getContractAt("Raffle", raffleDeployment.address);
   const entranceFee = await raffle.getEntranceFee();
   await raffle.enterRaffle({ value: entranceFee });
   console.log("Entered!");
